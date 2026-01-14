@@ -8,7 +8,7 @@ export const Hero = styled.section`
   flex-direction: column;
   justify-content: center;
   background-color: #2a2a2a;
-  background-image: url("../../../public/img/Home/Home.jpg");
+  background-image: url("/img/Home/Home.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
