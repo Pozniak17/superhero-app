@@ -1,10 +1,10 @@
-server/tmp/*
+# server/tmp/*
 
-!server/tmp/.gitkeep
+# !server/tmp/.gitkeep
 
-server/public/avatars*
+# server/public/avatars*
 
-!server/public/avatars/.gitkeep
+# !server/public/avatars/.gitkeep
 
 # Logs
 logs
