@@ -3,6 +3,8 @@ import { Wrapper } from "./Details.styled";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+const BASE_URL = "https://superhero-app-0he6.onrender.com";
+
 export default function Details() {
   const [hero, setHero] = useState(null);
 
@@ -11,9 +13,7 @@ export default function Details() {
 
   useEffect(() => {
     async function fetchHero() {
-      const response = await axios.get(
-        `https://superhero-app-0he6.onrender.com/herous/${id}`
-      );
+      const response = await axios.get(`${BASE_URL}/herous/${id}`);
 
       // console.log(response.data.nickname);
       setHero(response.data);
@@ -31,6 +31,13 @@ export default function Details() {
           <h3>Description: {hero.origin_description}</h3>
           <h3>Super Powers: {hero.superpowers}</h3>
           <h3>Phrase: {hero.catch_phrase}</h3>
+          <ul>
+            {hero.images.map((image, idx) => (
+              <li key={idx}>
+                <img src={`${BASE_URL}/avatars/${image}`} alt={hero.nickname} />
+              </li>
+            ))}
+          </ul>
         </Wrapper>
       )}
     </>
