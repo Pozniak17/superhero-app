@@ -1,12 +1,14 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-
+import path from "node:path";
 import "./db.js";
 import router from "./routes/index.js";
 
 const app = express();
+app.use("/avatars", express.static(path.resolve("public/avatars")));
 app.use(cors());
+
 const PORT = process.env.PORT || 3000;
 
 app.use(router);
