@@ -12,7 +12,7 @@ export default function Catalog() {
         "https://superhero-app-0he6.onrender.com/heroes"
       );
 
-      setHerous(response.data.data);
+      setHerous(response.data.items);
     }
 
     fetchHerous();

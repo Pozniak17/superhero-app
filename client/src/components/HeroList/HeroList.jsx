@@ -6,7 +6,7 @@ export const HeroList = ({ items }) => {
   console.log(items);
   return (
     <Wrapper>
-      {items.length > 0 && (
+      {items?.length > 0 && (
         <List>
           {items.map(({ _id, nickname, images }) => (
             <HeroItem

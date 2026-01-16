@@ -13,7 +13,7 @@ export default function Details() {
 
   useEffect(() => {
     async function fetchHero() {
-      const response = await axios.get(`${BASE_URL}/herous/${id}`);
+      const response = await axios.get(`${BASE_URL}/heroes/${id}`);
 
       // console.log(response.data.nickname);
       setHero(response.data);
