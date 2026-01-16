@@ -12,7 +12,7 @@ async function getHerous(req, res, next) {
     res.json({
       status: 200,
       message: "Successfully found heroes!",
-      herous,
+      ...herous,
     });
   } catch (error) {
     next(error);
