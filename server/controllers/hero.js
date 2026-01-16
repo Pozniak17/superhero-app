@@ -1,10 +1,19 @@
 import Hero from "../models/hero.js";
+import { getAllHeroes } from "../services/heroes.js";
+import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 
 async function getHerous(req, res, next) {
-  try {
-    const herous = await Hero.find();
+  const { page, perPage } = parsePaginationParams(req.query);
 
-    res.send(herous);
+  try {
+    // Просто викликаємо функцію сервісу
+    const herous = await getAllHeroes({ page, perPage });
+
+    res.json({
+      status: 200,
+      message: "Successfully found heroes!",
+      data: herous, // Тут прийде об'єкт з data та paginationData
+    });
   } catch (error) {
     next(error);
   }
