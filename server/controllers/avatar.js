@@ -1,30 +1,77 @@
-import * as fs from "node:fs/promises";
-import path from "node:path";
-
+// controllers/avatar.js
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { getEnvVar } from "../utils/getEnvVar.js";
+// Припустимо, твоя модель/сервіс називається Hero
 import Hero from "../models/hero.js";
 
-async function uploadAvatar(req, res, next) {
-  try {
-    await fs.rename(
-      req.file.path,
-      path.resolve("public/avatars", req.file.filename)
-    );
+async function patchStudentController(req, res, next) {
+  const { id } = req.params;
+  const file = req.file;
 
-    // записуємо користувачу поле аватар з картинкою
-    const hero = await Hero.findByIdAndUpdate(
-      req.params.id,
-      { $push: { images: req.file.filename } },
+  if (!file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+
+  try {
+    let photoUrl;
+
+    if (getEnvVar("ENABLE_CLOUDINARY") === "true") {
+      photoUrl = await saveFileToCloudinary(file);
+    } else {
+      // Переконайся, що ця функція імпортована, якщо вона тобі потрібна локально
+      // photoUrl = await saveFileToUploadDir(file);
+      return res.status(400).json({ message: "Local storage not configured" });
+    }
+
+    // ВАЖЛИВО: Оновлюємо поле images (масив), додаючи нове посилання
+    // Або замінюємо його, залежно від твоєї задачі
+    const result = await Hero.findByIdAndUpdate(
+      id,
+      { $push: { images: photoUrl } }, // Додаємо в масив images
       { new: true }
     );
 
-    if (hero === null) {
-      return res.status(404).send({ message: "Hero not found" });
+    if (!result) {
+      return res.status(404).json({ message: "Hero not found" });
     }
 
-    res.send(hero);
+    res.json({
+      status: 200,
+      message: "Successfully uploaded!",
+      data: result.images, // Повертаємо оновлений список картинок
+    });
   } catch (error) {
-    next(error);
+    next(error); // Передаємо помилку в global error handler
   }
 }
 
-export default { uploadAvatar };
+// import * as fs from "node:fs/promises";
+// import path from "node:path";
+
+// import Hero from "../models/hero.js";
+
+// async function uploadAvatar(req, res, next) {
+//   try {
+//     await fs.rename(
+//       req.file.path,
+//       path.resolve("public/avatars", req.file.filename)
+//     );
+
+//     // записуємо користувачу поле аватар з картинкою
+//     const hero = await Hero.findByIdAndUpdate(
+//       req.params.id,
+//       { $push: { images: req.file.filename } },
+//       { new: true }
+//     );
+
+//     if (hero === null) {
+//       return res.status(404).send({ message: "Hero not found" });
+//     }
+
+//     res.send(hero);
+//   } catch (error) {
+//     next(error);
+//   }
+// }
+
+export default { patchStudentController };

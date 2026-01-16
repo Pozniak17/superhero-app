@@ -5,6 +5,7 @@ import path from "node:path";
 import "./db.js";
 import router from "./routes/index.js";
 import { fileURLToPath } from "url";
+import { getEnvVar } from "./utils/getEnvVar.js";
 
 const app = express();
 app.use(cors());
@@ -16,7 +17,7 @@ const avatarsPath = path.join(__dirname, "public", "avatars");
 
 console.log("Static files will be served from:", avatarsPath);
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(getEnvVar("PORT", "3000"));
 
 app.use("/avatars", express.static(avatarsPath));
 

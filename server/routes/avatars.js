@@ -7,7 +7,7 @@ const router = express.Router();
 router.patch(
   "/:id",
   uploadMiddleware.single("avatar"),
-  avatarController.uploadAvatar
+  avatarController.patchStudentController
 );
 
 export default router;
