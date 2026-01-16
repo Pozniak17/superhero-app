@@ -12,7 +12,7 @@ async function getHerous(req, res, next) {
     res.json({
       status: 200,
       message: "Successfully found heroes!",
-      data: herous, // Тут прийде об'єкт з data та paginationData
+      herous,
     });
   } catch (error) {
     next(error);

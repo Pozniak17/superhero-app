@@ -9,7 +9,7 @@ export default function Catalog() {
   useEffect(() => {
     async function fetchHerous() {
       const response = await axios.get(
-        "https://superhero-app-0he6.onrender.com/herous"
+        "https://superhero-app-0he6.onrender.com/heroes"
       );
 
       setHerous(response.data);
