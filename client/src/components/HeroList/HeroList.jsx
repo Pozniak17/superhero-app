@@ -8,7 +8,7 @@ export const HeroList = ({ items }) => {
     <Wrapper>
       {items.length > 0 && (
         <List>
-          {items.items.map(({ _id, nickname, images }) => (
+          {items.map(({ _id, nickname, images }) => (
             <HeroItem
               key={_id}
               id={_id}
