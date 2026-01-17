@@ -4,7 +4,7 @@ import { getEnvVar } from "../utils/getEnvVar.js";
 // Припустимо, твоя модель/сервіс називається Hero
 import Hero from "../models/hero.js";
 
-async function patchStudentController(req, res, next) {
+async function patchUpload(req, res, next) {
   const { id } = req.params;
   const file = req.file;
 
@@ -45,4 +45,4 @@ async function patchStudentController(req, res, next) {
   }
 }
 
-export default { patchStudentController };
+export default { patchUpload };

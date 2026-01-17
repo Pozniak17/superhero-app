@@ -34,18 +34,34 @@ async function getHeroById(req, res, next) {
 }
 
 async function createHero(req, res, next) {
-  // Add Joi before
-  const hero = {
-    nickname: req.body.nickname,
-    real_name: req.body.real_name,
-    origin_description: req.body.origin_description,
-    superpowers: req.body.superpowers,
-    catch_phrase: req.body.catch_phrase,
-  };
-
+  console.log("DEBUG BODY:", req.body); // Має вивести об'єкт з nickname
+  console.log("DEBUG FILES:", req.files); // Має вивести масив файлів
   try {
-    const result = await Hero.create(hero);
-    res.status(201).send(result);
+    // Multer кладе текстові поля в req.body, а файли в req.files
+    const {
+      nickname,
+      real_name,
+      origin_description,
+      superpowers,
+      catch_phrase,
+    } = req.body;
+
+    if (!nickname) {
+      return res.status(400).json({ message: "Nickname is required" });
+    }
+
+    const imageUrls = req.files ? req.files.map((file) => file.path) : [];
+
+    const result = await Hero.create({
+      nickname,
+      real_name,
+      origin_description,
+      superpowers,
+      catch_phrase,
+      images: imageUrls,
+    });
+
+    res.status(201).json(result);
   } catch (error) {
     next(error);
   }

@@ -9,10 +9,13 @@ import { getEnvVar } from "./utils/getEnvVar.js";
 
 const app = express();
 app.use(cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 1. Склеюємо шлях до папки
 const avatarsPath = path.join(__dirname, "public", "avatars");
 
 console.log("Static files will be served from:", avatarsPath);

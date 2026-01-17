@@ -1,18 +1,27 @@
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
-import path from "node:path";
-import crypto from "node:crypto";
+import "dotenv/config";
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, path.resolve("tmp"));
-  },
-  filename(req, file, cb) {
-    const extname = path.extname(file.originalname);
-    const basename = path.basename(file.originalname, extname);
-    const suffix = crypto.randomUUID();
+// Тимчасово додамо цей лог, щоб побачити чи підтягнулися ключі
+console.log(
+  "Cloudinary Config Check:",
+  process.env.CLOUD_NAME,
+  !!process.env.API_KEY
+);
 
-    cb(null, `${basename}-${suffix}${extname}`);
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME, // Перевір, щоб у .env було саме так
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "heroes",
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
   },
 });
 
-export default multer({ storage });
+export const upload = multer({ storage });

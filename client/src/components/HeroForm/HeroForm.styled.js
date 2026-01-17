@@ -1,10 +1,16 @@
 import styled from "styled-components";
 
-export const Form = styled.form.attrs({ autocomplete: "off" })`
-  display: inline-flex;
-  align-items: flex-end;
+export const Form = styled.form.attrs({ autoComplete: "off" })`
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  height: 400px;
+
   gap: 12px;
-  margin-bottom: 16px;
+
   padding: 8px;
   border: 1px solid #2a2a2a;
   border-radius: 4px;

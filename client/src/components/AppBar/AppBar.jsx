@@ -15,6 +15,9 @@ export default function AppBar() {
         <li>
           <Link to="/catalog">Herous</Link>
         </li>
+        <li>
+          <Link to="/new">New Hero</Link>
+        </li>
       </List>
     </Header>
   );

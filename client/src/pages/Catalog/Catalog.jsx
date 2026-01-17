@@ -1,7 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { HeroList } from "../../components/HeroList/HeroList";
 import PaginationButton from "../../components/PaginationButton/PaginationButton";
-import axios from "axios";
+import { HeroForm } from "../../components/HeroForm/HeroForm";
 
 export default function Catalog() {
   const [herous, setHerous] = useState([]);

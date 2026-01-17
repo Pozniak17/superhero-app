@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Catalog from "./pages/Catalog/Catalog";
 import AppBar from "./components/AppBar/AppBar";
 import Home from "./pages/Home/Home";
+import NewHero from "./pages/NewHero/NewHero";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/catalog/:id" element={<Details />} />
+        <Route path="/new" element={<NewHero />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

@@ -1,13 +1,9 @@
 import express from "express";
 
-import uploadMiddleware from "../middleware/upload.js";
+import { upload } from "../middleware/upload.js";
 import avatarController from "../controllers/avatar.js";
 
 const router = express.Router();
-router.patch(
-  "/:id",
-  uploadMiddleware.single("avatar"),
-  avatarController.patchStudentController
-);
+router.patch("/:id", upload.single("avatar"), avatarController.patchUpload);
 
 export default router;
