@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "npm install --legacy-peer-deps",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Yevhenii Pozniak <jekamanu@gmail.com>",
