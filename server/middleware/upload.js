@@ -3,15 +3,8 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
 import "dotenv/config";
 
-// Тимчасово додамо цей лог, щоб побачити чи підтягнулися ключі
-console.log(
-  "Cloudinary Config Check:",
-  process.env.CLOUD_NAME,
-  !!process.env.API_KEY
-);
-
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME, // Перевір, щоб у .env було саме так
+  cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
 });

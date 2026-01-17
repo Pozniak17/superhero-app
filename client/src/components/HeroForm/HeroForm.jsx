@@ -40,7 +40,7 @@ export const HeroForm = () => {
 
       console.log("Hero created:", response.data);
       alert("Героя успішно створено!");
-      form.reset(); // Очищуємо форму
+      form.reset();
       setFiles([]);
     } catch (err) {
       console.error("Помилка створення:", err);
