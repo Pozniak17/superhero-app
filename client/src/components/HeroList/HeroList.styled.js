@@ -11,4 +11,7 @@ export const List = styled.ul`
 
 export const Wrapper = styled.div`
   margin-top: 50px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 `;
