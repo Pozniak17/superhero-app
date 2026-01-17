@@ -1,7 +1,27 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+export const DeleteButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10;
+
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
 export const HeroCard = styled.li`
+  position: relative;
+  list-style: none;
   border: 1px solid #2a2a2a;
   width: 180px;
   height: 360px;
@@ -9,6 +29,11 @@ export const HeroCard = styled.li`
   padding: 8px;
   border-radius: 4px;
   cursor: pointer;
+
+  /* При наведенні на картку показуємо кнопку */
+  &:hover ${DeleteButton} {
+    opacity: 1;
+  }
 
   &:hover {
     border-style: dashed;

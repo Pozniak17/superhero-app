@@ -14,7 +14,7 @@ export default function Catalog() {
   useEffect(() => {
     async function fetchHerous() {
       const response = await axios.get(
-        `https://superhero-app-0he6.onrender.com/heroes?page=${page}&perPage=5`
+        `https://superhero-app-0he6.onrender.com/heroes?page=${page}&perPage=5`,
       );
 
       setHerous(response.data.items);
@@ -35,6 +35,7 @@ export default function Catalog() {
       setPage(page - 1);
     }
   };
+
   return (
     <>
       <HeroList items={herous} />
