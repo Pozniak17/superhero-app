@@ -1,7 +1,7 @@
 import { HeroItem } from "../HeroItem/HeroItem";
 import { List, Wrapper } from "./HeroList.styled";
 
-export const HeroList = ({ items }) => {
+export const HeroList = ({ items, onDelete }) => {
   // console.log(items);
   return (
     <>
@@ -10,6 +10,7 @@ export const HeroList = ({ items }) => {
           <List>
             {items.map(({ _id, nickname, images }) => (
               <HeroItem
+                onDelete={onDelete}
                 key={_id}
                 id={_id}
                 // img={Superman}

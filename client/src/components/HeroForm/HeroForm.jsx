@@ -17,7 +17,7 @@ export const HeroForm = () => {
     formData.append("real_name", form.elements.real_name.value);
     formData.append(
       "origin_description",
-      form.elements.origin_description.value
+      form.elements.origin_description.value,
     );
     formData.append("superpowers", form.elements.superpowers.value);
     formData.append("catch_phrase", form.elements.catch_phrase.value);
@@ -35,16 +35,16 @@ export const HeroForm = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       console.log("Hero created:", response.data);
-      alert("Героя успішно створено!");
+      alert("Hero successfully created!");
       form.reset();
       setFiles([]);
     } catch (err) {
-      console.error("Помилка створення:", err);
-      alert("Не вдалося створити героя");
+      console.error("Created failed:", err);
+      alert("Failed to create hero");
     }
   };
 

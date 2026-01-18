@@ -7,10 +7,18 @@ import {
   DeleteButton,
 } from "./HeroItem.styled";
 
-export const HeroItem = ({ id, images, nickname }) => {
+export const HeroItem = ({ id, images, nickname, onDelete }) => {
+  const handleDeleteClick = (e) => {
+    // щоб кліки не заходив в Link
+    e.preventDefault();
+    e.stopPropagation();
+
+    // з catalog
+    onDelete(id);
+  };
   return (
     <HeroCard>
-      <DeleteButton>
+      <DeleteButton onClick={handleDeleteClick}>
         <IoIosRemoveCircle size="24" color="red" />
       </DeleteButton>
       <StyledLink to={`/catalog/${id}`}>
