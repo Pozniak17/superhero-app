@@ -5,8 +5,8 @@ export default function PuginationButton({
   nextPage,
   prevPage,
   page,
-  setPage,
   totalPages,
+  setPage,
 }) {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   return (

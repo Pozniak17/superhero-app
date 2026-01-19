@@ -1,40 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Image, Item, List, Wrapper } from "./Details.styled";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHeroById } from "../../redux/operations";
 
 const BASE_URL = "https://superhero-app-0he6.onrender.com";
 
 export default function Details() {
-  const [hero, setHero] = useState(null);
-
   const { id } = useParams();
-  console.log(hero);
+  const dispatch = useDispatch();
+
+  const hero = useSelector((state) => state.heroes.currentHero);
+  const isLoading = useSelector((state) => state.heroes.isLoading);
 
   useEffect(() => {
-    async function fetchHero() {
-      const response = await axios.get(`${BASE_URL}/heroes/${id}`);
+    dispatch(fetchHeroById(id));
+  }, [dispatch, id]);
 
-      // console.log(response.data.nickname);
-      setHero(response.data);
-    }
-
-    fetchHero();
-  }, [id]);
+  if (isLoading) return <h2>Loading hero details...</h2>;
 
   return (
     <>
       {hero && (
         <Wrapper>
           <h2>Nickname: {hero.nickname}</h2>
-          <h2>Real Name: {hero.real_name}</h2>
-          <h3>Description: {hero.origin_description}</h3>
-          <h3>Super Powers: {hero.superpowers}</h3>
-          <h3>Phrase: {hero.catch_phrase}</h3>
+          <p>
+            <strong>Real Name:</strong> {hero.real_name}
+          </p>
+          <p>
+            <strong>Description:</strong> {hero.origin_description}
+          </p>
+          <p>
+            <strong>Super Powers:</strong> {hero.superpowers}
+          </p>
+          <p>
+            <strong>Phrase:</strong> {hero.catch_phrase}
+          </p>
+
           <List>
-            {hero.images.map((image, idx) => (
+            {hero.images?.map((image, idx) => (
               <Item key={idx}>
-                <Image src={image} alt="" />
+                <Image src={image} alt={hero.real_name} />
               </Item>
             ))}
           </List>

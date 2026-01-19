@@ -1,8 +1,9 @@
+import { useSelector } from "react-redux";
 import { HeroItem } from "../HeroItem/HeroItem";
 import { List, Wrapper } from "./HeroList.styled";
 
-export const HeroList = ({ items, onDelete }) => {
-  // console.log(items);
+export const HeroList = ({ onDelete }) => {
+  const items = useSelector((state) => state.heroes.items);
   return (
     <>
       <Wrapper>
@@ -13,7 +14,6 @@ export const HeroList = ({ items, onDelete }) => {
                 onDelete={onDelete}
                 key={_id}
                 id={_id}
-                // img={Superman}
                 nickname={nickname}
                 images={images}
               />

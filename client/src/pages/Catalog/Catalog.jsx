@@ -1,70 +1,59 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { HeroList } from "../../components/HeroList/HeroList";
 import PaginationButton from "../../components/PaginationButton/PaginationButton";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHeroes, deleteHero } from "../../redux/operations";
+import { setPage } from "../../redux/heroesSlice";
 
 export default function Catalog() {
-  const [herous, setHeroes] = useState([]);
-  // 1. Стейт для поточної сторінки (починаємо з 1)
-  const [page, setPage] = useState(1);
-  // 2. Стейт для загальної кількості сторінок (щоб знати, коли кінець)
-  const [totalPages, setTotalPages] = useState(1);
+  const dispatch = useDispatch();
 
-  // console.log(herous);
+  // const heroes = useSelector((state) => state.heroes.items);
+  const page = useSelector((state) => state.heroes.page);
+  const totalPages = useSelector((state) => state.heroes.totalPages);
+  const isLoading = useSelector((state) => state.heroes.isLoading);
+
   useEffect(() => {
-    async function fetchHerous() {
-      const response = await axios.get(
-        `https://superhero-app-0he6.onrender.com/heroes?page=${page}&perPage=5`,
-      );
-
-      setHeroes(response.data.items);
-      setTotalPages(response.data.totalPages);
-    }
-
-    fetchHerous();
-  }, [page]);
+    dispatch(fetchHeroes(page));
+  }, [dispatch, page]);
 
   const handleNextPage = () => {
     if (page < totalPages) {
-      setPage(page + 1);
+      dispatch(setPage(page + 1));
     }
   };
 
   const handlePrevPage = () => {
     if (page > 1) {
-      setPage(page - 1);
+      dispatch(setPage(page - 1));
     }
   };
 
-  const deleteHero = async (id) => {
+  const handlePageChange = (pageNumber) => {
+    dispatch(setPage(pageNumber));
+  };
+
+  const handleDelete = (id) => {
     const isConfirmed = window.confirm("Do you want to delete hero?");
-    if (!isConfirmed) return;
-
-    try {
-      // 1. Видаляємо на сервері
-      await axios.delete(
-        `https://superhero-app-0he6.onrender.com/heroes/${id}`,
-      );
-
-      // 2. Видаляємо локально зі стейту (щоб не перезавантажувати сторінку)
-      setHeroes((prevHeroes) => prevHeroes.filter((hero) => hero._id !== id));
-
-      alert("Hero successfully delete!");
-    } catch (error) {
-      console.error(error);
-      alert("Delete failed. Please try again.");
+    if (isConfirmed) {
+      dispatch(deleteHero(id));
     }
   };
 
   return (
     <>
-      <HeroList items={herous} onDelete={deleteHero} />
+      {isLoading && (
+        <h2 style={{ textAlign: "center" }}>
+          Loading Heroes... waiting 1min pls:D
+        </h2>
+      )}
+      <HeroList onDelete={handleDelete} />
       <PaginationButton
         nextPage={handleNextPage}
         prevPage={handlePrevPage}
         page={page}
-        setPage={setPage}
         totalPages={totalPages}
+        setPage={handlePageChange}
       />
     </>
   );

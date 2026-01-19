@@ -13,7 +13,6 @@ export const HeroItem = ({ id, images, nickname, onDelete }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // з catalog
     onDelete(id);
   };
   return (
