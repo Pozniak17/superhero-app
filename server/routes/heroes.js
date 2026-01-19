@@ -1,7 +1,7 @@
 import express from "express";
 import HeroController from "../controllers/hero.js";
 import { heroJoiSchema } from "../schemas/heroSchema.js";
-import { validateBody } from "../middlewares/validateBody.js";
+import { validateBody } from "../middleware/validateBody.js";
 import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
