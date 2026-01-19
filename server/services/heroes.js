@@ -8,13 +8,13 @@ export async function getAllHeroes({ page, perPage }) {
   // Запускаємо обидва запити одночасно (це швидше)
   const [heroesCount, heroes] = await Promise.all([
     Hero.countDocuments(), // Рахуємо загальну кількість
-    Hero.find().skip(skip).limit(limit).exec(), // Отримуємо шматок даних
+    Hero.find().skip(skip).limit(limit).exec(),
   ]);
 
   const paginationData = calculatePaginationData(heroesCount, perPage, page);
 
   return {
-    items: heroes, // список героїв
-    ...paginationData, // дані пагінації (totalPages, hasNextPage тощо)
+    items: heroes,
+    ...paginationData,
   };
 }

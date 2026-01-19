@@ -32,12 +32,26 @@ export const fetchHeroById = createAsyncThunk(
   },
 );
 
+export const addHero = createAsyncThunk(
+  "heroes/addHero",
+  async (formData, thunkAPI) => {
+    try {
+      const response = await axios.post("/heroes", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
 export const deleteHero = createAsyncThunk(
   "heroes/deleteHero",
   async (id, thunkAPI) => {
     try {
       await axios.delete(`/heroes/${id}`);
-      return id; // Повертаємо ID, щоб редюсер знав, кого видалити зі стейту
+      return id;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

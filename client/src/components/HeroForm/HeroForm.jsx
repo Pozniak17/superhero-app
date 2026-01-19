@@ -1,18 +1,19 @@
 import { useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./HeroForm.styled";
+import { addHero } from "../../redux/operations";
 
 export const HeroForm = () => {
   const [files, setFiles] = useState([]);
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.heroes.isLoading);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-
-    // 1. Створюємо об'єкт FormData (це обов'язково для передачі файлів)
     const formData = new FormData();
 
-    // 2. Додаємо текстові поля згідно з ТЗ
+    // Збираємо дані
     formData.append("nickname", form.elements.nickname.value);
     formData.append("real_name", form.elements.real_name.value);
     formData.append(
@@ -22,29 +23,19 @@ export const HeroForm = () => {
     formData.append("superpowers", form.elements.superpowers.value);
     formData.append("catch_phrase", form.elements.catch_phrase.value);
 
-    // 3. Додаємо всі вибрані файли в поле "images"
     for (let i = 0; i < files.length; i++) {
       formData.append("images", files[i]);
     }
 
-    try {
-      const response = await axios.post(
-        "https://superhero-app-0he6.onrender.com/heroes",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+    const result = dispatch(addHero(formData));
 
-      console.log("Hero created:", response.data);
+    // Перевіряємо, чи все пройшло успішно
+    if (addHero.fulfilled.match(result)) {
       alert("Hero successfully created!");
       form.reset();
       setFiles([]);
-    } catch (err) {
-      console.error("Created failed:", err);
-      alert("Failed to create hero");
+    } else {
+      alert("Failed to create hero: " + result.payload);
     }
   };
 
@@ -78,7 +69,9 @@ export const HeroForm = () => {
         onChange={(e) => setFiles(e.target.files)}
       />
 
-      <button type="submit">Create Hero</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Creating..." : "Create Hero"}
+      </button>
     </Form>
   );
 };

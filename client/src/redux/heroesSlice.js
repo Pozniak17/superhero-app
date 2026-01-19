@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteHero, fetchHeroById, fetchHeroes } from "./operations";
+import { addHero, deleteHero, fetchHeroById, fetchHeroes } from "./operations";
 
 const heroesSlice = createSlice({
   name: "heroes",
@@ -39,6 +39,11 @@ const heroesSlice = createSlice({
       .addCase(fetchHeroById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentHero = action.payload;
+      })
+      // --- ADD HERO ---
+      .addCase(addHero.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items.push(action.payload);
       })
       // --- DELETE HERO ---
       .addCase(deleteHero.pending, (state) => {
