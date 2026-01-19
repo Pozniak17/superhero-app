@@ -3,8 +3,7 @@ import { Image, Item, List, Wrapper } from "./Details.styled";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHeroById } from "../../redux/operations";
-
-const BASE_URL = "https://superhero-app-0he6.onrender.com";
+import { Loader } from "../../components/Loader/Loader";
 
 export default function Details() {
   const { id } = useParams();
@@ -17,25 +16,27 @@ export default function Details() {
     dispatch(fetchHeroById(id));
   }, [dispatch, id]);
 
-  if (isLoading) return <h2>Loading hero details...</h2>;
+  if (isLoading) return <Loader />;
 
   return (
     <>
       {hero && (
         <Wrapper>
-          <h2>Nickname: {hero.nickname}</h2>
-          <p>
-            <strong>Real Name:</strong> {hero.real_name}
-          </p>
-          <p>
-            <strong>Description:</strong> {hero.origin_description}
-          </p>
-          <p>
-            <strong>Super Powers:</strong> {hero.superpowers}
-          </p>
-          <p>
-            <strong>Phrase:</strong> {hero.catch_phrase}
-          </p>
+          <div>
+            <h2>Nickname: {hero.nickname}</h2>
+            <p>
+              <strong>Real Name:</strong> {hero.real_name}
+            </p>
+            <p>
+              <strong>Description:</strong> {hero.origin_description}
+            </p>
+            <p>
+              <strong>Super Powers:</strong> {hero.superpowers}
+            </p>
+            <p>
+              <strong>Phrase:</strong> {hero.catch_phrase}
+            </p>
+          </div>
 
           <List>
             {hero.images?.map((image, idx) => (

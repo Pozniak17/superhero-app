@@ -4,6 +4,7 @@ import PaginationButton from "../../components/PaginationButton/PaginationButton
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHeroes, deleteHero } from "../../redux/operations";
 import { setPage } from "../../redux/heroesSlice";
+import { Loader } from "../../components/Loader/Loader";
 
 export default function Catalog() {
   const dispatch = useDispatch();
@@ -42,19 +43,20 @@ export default function Catalog() {
 
   return (
     <>
-      {isLoading && (
-        <h2 style={{ textAlign: "center" }}>
-          Loading Heroes... waiting 1min pls:D
-        </h2>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <HeroList onDelete={handleDelete} />
+          <PaginationButton
+            nextPage={handleNextPage}
+            prevPage={handlePrevPage}
+            page={page}
+            totalPages={totalPages}
+            setPage={handlePageChange}
+          />
+        </>
       )}
-      <HeroList onDelete={handleDelete} />
-      <PaginationButton
-        nextPage={handleNextPage}
-        prevPage={handlePrevPage}
-        page={page}
-        totalPages={totalPages}
-        setPage={handlePageChange}
-      />
     </>
   );
 }
