@@ -69,25 +69,50 @@ async function createHero(req, res, next) {
 
 async function updateHero(req, res, next) {
   const { id } = req.params;
-  // Add Joi before
-  const hero = {
-    nickname: req.body.nickname,
-    real_name: req.body.real_name,
-    origin_description: req.body.origin_description,
-    superpowers: req.body.superpowers,
-    catch_phrase: req.body.catch_phrase,
-  };
 
   try {
-    const result = await Hero.findByIdAndUpdate(id, hero, { new: true });
+    const updateData = {
+      nickname: req.body.nickname,
+      real_name: req.body.real_name,
+      origin_description: req.body.origin_description,
+      superpowers: req.body.superpowers,
+      catch_phrase: req.body.catch_phrase,
+    };
 
-    if (result === null) {
-      return res.status(404).send({ message: "Hero not found" });
+    let finalImages = [];
+
+    if (req.body.existingImages) {
+      try {
+        // Якщо це вже масив (іноді multer так робить), не парсимо
+        finalImages =
+          typeof req.body.existingImages === "string"
+            ? JSON.parse(req.body.existingImages)
+            : req.body.existingImages;
+      } catch (e) {
+        // Якщо парсинг не вдався, вважаємо, що це один рядок або порожньо
+        finalImages = req.body.existingImages ? [req.body.existingImages] : [];
+      }
     }
 
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map((file) => file.path || file.secure_url);
+      finalImages = [...finalImages, ...newImages];
+    }
+
+    updateData.images = finalImages;
+
+    // Використовуємо runValidators, щоб побачити помилку, якщо дані не ок
+    const result = await Hero.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!result) return res.status(404).send({ message: "Hero not found" });
     res.send(result);
   } catch (error) {
-    next(error);
+    console.error("!!! SERVER ERROR DETAILS !!!:", error.message);
+    // Повертаємо помилку в JSON, щоб побачити її у вкладці Network
+    res.status(500).json({ error: error.message });
   }
 }
 

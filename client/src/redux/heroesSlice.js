@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addHero, deleteHero, fetchHeroById, fetchHeroes } from "./operations";
+import {
+  addHero,
+  deleteHero,
+  fetchHeroById,
+  fetchHeroes,
+  updateHero,
+} from "./operations";
 
 const heroesSlice = createSlice({
   name: "heroes",
@@ -44,6 +50,20 @@ const heroesSlice = createSlice({
       .addCase(addHero.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items.push(action.payload);
+      })
+      // --- UPDATE HERO
+      .addCase(updateHero.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        // оновлюємо в списку (якщо ми в каталозі)
+        const index = state.items.findIndex(
+          (hero) => hero._id === action.payload._id,
+        );
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+        // оновлюємо поточного героя (якщо ми на сторінці деталей)
+        state.currentHero = action.payload;
       })
       // --- DELETE HERO ---
       .addCase(deleteHero.pending, (state) => {

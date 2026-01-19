@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, Item, List, Wrapper } from "./Details.styled";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHeroById } from "../../redux/operations";
 import { Loader } from "../../components/Loader/Loader";
+import { Modal } from "../../components/Modal/Modal";
+import { HeroForm } from "../../components/HeroForm/HeroForm";
 
 export default function Details() {
   const { id } = useParams();
   const dispatch = useDispatch();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hero = useSelector((state) => state.heroes.currentHero);
   const isLoading = useSelector((state) => state.heroes.isLoading);
@@ -22,6 +26,7 @@ export default function Details() {
     <>
       {hero && (
         <Wrapper>
+          <button onClick={() => setIsModalOpen(true)}>Edit Hero</button>
           <div>
             <h2>Nickname: {hero.nickname}</h2>
             <p>
@@ -45,6 +50,16 @@ export default function Details() {
               </Item>
             ))}
           </List>
+
+          {isModalOpen && (
+            <Modal onClose={() => setIsModalOpen(false)}>
+              <HeroForm
+                initialData={hero}
+                isEditing={true}
+                onSuccess={() => setIsModalOpen(false)}
+              />
+            </Modal>
+          )}
         </Wrapper>
       )}
     </>

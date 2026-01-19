@@ -46,6 +46,20 @@ export const addHero = createAsyncThunk(
   },
 );
 
+export const updateHero = createAsyncThunk(
+  "heroes/updateHero",
+  async ({ id, formData }, thunkAPI) => {
+    try {
+      const response = await axios.put(`/heroes/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data; // Повертаємо оновленого героя
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
 export const deleteHero = createAsyncThunk(
   "heroes/deleteHero",
   async (id, thunkAPI) => {
